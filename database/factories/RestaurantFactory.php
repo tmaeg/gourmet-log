@@ -17,12 +17,11 @@ class RestaurantFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 1,
             'name' => fake()->lastName(),
             'name_katakana' => fake()->lastKanaName(),
             'review' => fake()->numberBetween(1, 5),
             'food_picture' => fake()->imageUrl(640, 480, 'food'),
-            'map_url' => '',
+            'map_url' => 'https://goo.gl/maps/FW6U7F4k3Rmjy7h79',
             'comment' => fake()->realText(100),
         ];
     }

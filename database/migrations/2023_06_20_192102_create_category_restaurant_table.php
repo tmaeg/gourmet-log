@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('restaurant_id')->constrained()->cascadeOnDelete();
             $table->primary(['category_id', 'restaurant_id']);
-            $table->timestamps();
         });
     }
 
