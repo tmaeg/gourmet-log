@@ -35,4 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::resource('restaurants', App\Http\Controllers\RestaurantController::class)
+    ->only(['index', 'show'])
+    ->middleware(['auth', 'verified']);
+
 require __DIR__.'/auth.php';

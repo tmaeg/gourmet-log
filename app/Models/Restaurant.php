@@ -24,6 +24,7 @@ class Restaurant extends Model
         'review',
         'food_picture',
         'map_url',
+        'comment',
     ];
 
     public function user(): BelongsTo

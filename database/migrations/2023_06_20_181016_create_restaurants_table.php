@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('review');
             $table->string('food_picture');
             $table->string('map_url');
+            $table->string('comment');
             $table->timestamps();
             $table->softDeletes();
         });
