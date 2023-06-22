@@ -3,6 +3,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { router } from '@inertiajs/vue3';
 
 defineProps(['restaurants']);
 
@@ -69,7 +70,9 @@ function truncateString(str, maxLength) {
                     <td>{{ restaurant.category }}</td>
                     <td>{{ restaurant.review }}</td>
                     <td>{{ truncateString(restaurant.comment, 20) }}</td>
-                    <td><PrimaryButton>詳細</PrimaryButton></td>
+                    <td><PrimaryButton @click="router.get(route('restaurants.show', {
+                      restaurant: restaurant.id,
+                    }))">詳細</PrimaryButton></td>
                     <td><SecondaryButton>編集</SecondaryButton></td>
                     <td><DangerButton>削除</DangerButton></td>
                 </tr>
