@@ -1,13 +1,28 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { router } from '@inertiajs/vue3';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TertiaryButton from '@/Components/TertiaryButton.vue';
+import { router, useForm } from '@inertiajs/vue3';
 
-defineProps({
+const props = defineProps({
     restaurant: {
         type: Object,
         required: true,
     },
+    type: {
+        type: String,
+        default: 'show',
+        validator(value) {
+            return ['show', 'store', 'update'].includes(value)
+        },
+    },
 });
+
+const form = useForm(props.restaurant);
+
+function back() {
+    history.back();
+}
 </script>
 
 <template>
@@ -33,7 +48,15 @@ defineProps({
             <a :href="restaurant.map_url" target="_blank" rel="noopener noreferrer">{{ restaurant.map_url }}</a>
             <h3>コメント</h3>
             <p>{{ restaurant.comment }}</p>
-            <button  @click="router.get(route('restaurants.index'))">お店リストに戻る</button>
+            <div v-if="type === 'show'">
+                <TertiaryButton  @click="router.get(route('restaurants.index'))">お店リストに戻る</TertiaryButton>
+            </div>
+            <div v-else-if="type === 'store'">
+                <TertiaryButton  @click="back()">戻る</TertiaryButton>
+                <PrimaryButton  @click="form.post(route('restaurants.store'))">登録する</PrimaryButton>
+            </div>
+            <div v-else-if="type === 'update'">
+            </div>
         </div>
     </AuthenticatedLayout>
 </template>

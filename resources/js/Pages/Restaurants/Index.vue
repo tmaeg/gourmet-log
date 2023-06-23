@@ -1,6 +1,7 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import TertiaryButton from '@/Components/TertiaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { router } from '@inertiajs/vue3';
@@ -48,7 +49,7 @@ function truncateString(str, maxLength) {
         <h2>お店リスト</h2>
         <form>
             <input />
-            <button>検索</button>
+            <TertiaryButton>検索</TertiaryButton>
         </form>
         <table>
             <thead>

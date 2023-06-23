@@ -25,10 +25,10 @@ function translate(node) {
         for(const child of node.childNodes) {
             translate(child);
         }
-        if(node.placeholder) {
+        if(node.placeholder in lang) {
             node.placeholder = lang[node.placeholder];
         }
-        if(node.label) {
+        if(node.label in lang) {
             node.label = lang[node.label];
         }
     }

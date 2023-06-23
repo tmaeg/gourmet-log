@@ -31,7 +31,7 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('restaurants.create')" :active="route().current('restaurants.create')">
                                     お店登録/編集
                                 </NavLink>
                             </div>
