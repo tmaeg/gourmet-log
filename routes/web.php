@@ -46,6 +46,8 @@ Route::group([
     Route::get('show/{restaurant}', 'show')->name('show');
     Route::get('create', 'create')->name('create');
     Route::post('store', 'store')->name('store');
+    Route::get('edit/{restaurant}', 'edit')->name('edit');
+    Route::post('update', 'update')->name('update');
 });
 
 require __DIR__.'/auth.php';

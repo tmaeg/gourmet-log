@@ -74,7 +74,9 @@ function truncateString(str, maxLength) {
                     <td><PrimaryButton @click="router.get(route('restaurants.show', {
                       restaurant: restaurant.id,
                     }))">詳細</PrimaryButton></td>
-                    <td><SecondaryButton>編集</SecondaryButton></td>
+                    <td><SecondaryButton @click="router.get(route('restaurants.edit', {
+                      restaurant: restaurant.id,
+                    }))">編集</SecondaryButton></td>
                     <td><DangerButton>削除</DangerButton></td>
                 </tr>
             </tbody>

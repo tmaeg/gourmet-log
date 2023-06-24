@@ -64,7 +64,7 @@ class RestaurantController extends Controller
 
         $restaurant = $request->user()->restaurants()->create($validated);
 
-        $restaurant->categories()->sync(array_column($validated['categories'], 'id'));
+        $restaurant->categories()->sync($validated['categories']);
 
         return redirect(route('restaurants.index'));
     }
@@ -74,19 +74,25 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant): Response
     {
-        $restaurant['categories'] = $restaurant->categories;
+        $restaurant['categories'] = $restaurant->categories()->pluck('id')->all();
 
         return Inertia::render('Restaurants/Show', [
             'restaurant' => $restaurant,
+            'categories' => Auth::user()->categories,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Restaurant $restaurant)
+    public function edit(Restaurant $restaurant): Response
     {
-        //
+        $restaurant['categories'] = $restaurant->categories()->pluck('id')->all();
+
+        return Inertia::render('Restaurants/Edit', [
+            'restaurant' => $restaurant,
+            'categories' => Auth::user()->categories,
+        ]);
     }
 
     /**
@@ -94,7 +100,7 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant)
     {
-        //
+        dd($request->all());
     }
 
     /**

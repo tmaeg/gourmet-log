@@ -9,12 +9,16 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    categories: {
+        type: Array,
+        required: true,
+    },
 });
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <RestaurantShow :restaurant="restaurant" :food-picture="restaurant.food_picture" />
+        <RestaurantShow :restaurant="restaurant" :food-picture="restaurant.food_picture" :categories="categories" />
 
         <TertiaryButton  @click="router.get(route('restaurants.index'))">お店リストに戻る</TertiaryButton>
     </AuthenticatedLayout>

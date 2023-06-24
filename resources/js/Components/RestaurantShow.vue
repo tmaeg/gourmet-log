@@ -8,6 +8,10 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    categories: {
+        type: Array,
+        required: true,
+    },
 });
 </script>
 
@@ -18,7 +22,9 @@ const props = defineProps({
         <div>
             <h3>カテゴリー</h3>
             <ul>
-                <li v-for="category in restaurant.categories" data-my-translate="no">{{ category.name }}</li>
+                <li v-for="id in restaurant.categories" data-my-translate="no">
+                    {{ categories.find(category => category.id === id).name }}
+                </li>
             </ul>
         </div>
         <div>

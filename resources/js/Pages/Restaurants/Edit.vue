@@ -8,24 +8,23 @@ import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps({
+    restaurant: {
+        type: Object,
+        required: true,
+    },
     categories: {
         type: Array,
         required: true,
     },
 });
 
-const form = useForm('restaurant', {
-    name: null,
-    name_katakana: null,
-    categories: [],
-    review: [],
+const form = useForm({
+    ...props.restaurant,
     food_picture_file: null,
-    map_url: null,
-    comment: null,
 });
 
 const confirmPushed = ref(false);
-const foodPicture = ref('');
+const foodPicture = ref(props.restaurant.food_picture);
 
 function confirm() {
     form.clearErrors();
@@ -36,7 +35,7 @@ function confirm() {
 <template>
     <AuthenticatedLayout>
         <div v-if="!confirmPushed || Object.keys(form.errors).length > 0">
-            <h2>お店 新規登録</h2>
+            <h2>お店 編集</h2>
             <form @submit.prevent="confirm()">
                 <RestaurantForm :form="form" :categories="categories" :on-load-img="result => foodPicture = result" />
             </form>
@@ -45,7 +44,7 @@ function confirm() {
             <RestaurantShow :restaurant="form" :foodPicture="foodPicture" :categories="categories" />
             
             <TertiaryButton  @click="confirmPushed = false">戻る</TertiaryButton>
-            <PrimaryButton  @click="form.post(route('restaurants.store'))">登録する</PrimaryButton>
+            <PrimaryButton  @click="form.post(route('restaurants.update'))">更新する</PrimaryButton>
         </div>
     </AuthenticatedLayout>
 </template>
