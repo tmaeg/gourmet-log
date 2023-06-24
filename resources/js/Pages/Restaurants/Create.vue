@@ -1,17 +1,17 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputItem from '@/Components/InputItem.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TertiaryButton from '@/Components/TertiaryButton.vue';
 import InputError from '@/Components/InputError.vue';
+import RestaurantShow from '@/Components/RestaurantShow.vue';
 import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
     categories: {
         type: Array,
         required: true,
-    },
-    restaurant: {
-        type: Object,
     },
 });
 
@@ -20,22 +20,36 @@ const form = useForm('restaurant', {
     name_katakana: null,
     categories: [],
     review: [],
-    food_picture: null,
+    food_picture_file: null,
     map_url: null,
     comment: null,
 });
 
-function submit() {
-    form.post(route('restaurants.confirm'), { preserveState: true });
+const confirmPushed = ref(false);
+const foodPicture = ref('');
+
+function confirm() {
+    form.clearErrors();
+    confirmPushed.value = true
+}
+function prepareImage(file) {
+    form.food_picture_file = file;
+    
+    // ファイルをDataURLに変換
+    const reader = new FileReader();
+    reader.onload = () => {
+        foodPicture.value = reader.result;
+    };
+    reader.readAsDataURL(file);
 }
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <div>
+        <div v-if="!confirmPushed || Object.keys(form.errors).length > 0">
             <h2>お店 新規登録</h2>
-            <form @submit.prevent="submit()" class="flex flex-col items-start" required>
-                <InputItem label="店名">
+            <form @submit.prevent="confirm()" class="flex flex-col items-start">
+                <InputItem label="店名" required>
                     <input v-model="form.name" />
                 </InputItem>
                 <InputError :message="form.errors.name" />
@@ -48,7 +62,7 @@ function submit() {
                 <p class="required">カテゴリー</p>
                 <div>
                     <label v-for="category in categories">
-                        <input type="checkbox" v-model="form.categories" :value="category.id" />
+                        <input type="checkbox" v-model="form.categories" :value="category" />
                         <span>{{ category.name }}</span>
                     </label>
                 </div>
@@ -66,9 +80,9 @@ function submit() {
                 <InputError :message="form.errors.review" />
                 
                 <InputItem label="料理画像" required>
-                    <input type="file" @input="form.food_picture = $event.target.files[0]" />
+                    <input type="file" @input="prepareImage($event.target.files[0])" />
                 </InputItem>
-                <InputError :message="form.errors.food_picture" />
+                <InputError :message="form.errors.food_picture_file" />
                 
                 <InputItem label="Google Maps URL" required>
                     <input v-model="form.map_url" />
@@ -82,6 +96,12 @@ function submit() {
                 
                 <TertiaryButton type="submit">確認画面へ</TertiaryButton>
             </form>
+        </div>
+        <div v-else>
+            <RestaurantShow :restaurant="form" :foodPicture="foodPicture" />
+            
+            <TertiaryButton  @click="confirmPushed = false">戻る</TertiaryButton>
+            <PrimaryButton  @click="form.post(route('restaurants.store'))">登録する</PrimaryButton>
         </div>
     </AuthenticatedLayout>
 </template>

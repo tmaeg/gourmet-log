@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
@@ -34,9 +36,37 @@ class RestaurantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        dd($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:20',
+            'name_katakana' => [
+                'required',
+                'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u',
+            ],
+            'categories' => 'array',
+            'review' => 'required|numeric|min:1|max:5',
+            'food_picture_file' => [
+                'required',
+                File::image()
+                    ->max(12 * 1024),
+            ],
+            'map_url' => 'required|url',
+            'comment' => 'required|string|max:300',
+        ]);
+        
+        $path = Storage::disk('public')->putFile('food-pictures', $validated['food_picture_file']);
+        $validated['food_picture'] = asset('storage/' . $path);
+
+        if(!$validated['food_picture']) {
+            return redirect()->back()->with('error', '画像のアップロードに失敗しました。');
+        }
+
+        $restaurant = $request->user()->restaurants()->create($validated);
+
+        $restaurant->categories()->sync(array_column($validated['categories'], 'id'));
+
+        return redirect(route('restaurants.index'));
     }
 
     /**
@@ -44,6 +74,8 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant): Response
     {
+        $restaurant['categories'] = $restaurant->categories;
+
         return Inertia::render('Restaurants/Show', [
             'restaurant' => $restaurant,
         ]);
@@ -71,36 +103,5 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         //
-    }
-
-    /**
-     * 確認画面を表示する
-     */
-    public function confirm(Request $request): Response
-    {
-        $restaurant = $request->validate([
-            'name' => 'required|string|max:20',
-            'name_katakana' => [
-                'required',
-                'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u',
-            ],
-            'review' => 'required|numeric|min:1|max:5',
-            'food_picture' => [
-                'required',
-                File::image()
-                    ->max(12 * 1024),
-            ],
-            'map_url' => 'required|url',
-            'comment' => 'required|string|max:300',
-        ]);
-        
-        $restaurant['image_path'] = $restaurant['food_picture']->store('tmp', 'public');
-        $restaurant['image_url'] = asset('storage/' . $restaurant['image_path']);
-        unset($restaurant['food_picture']);
-
-        return Inertia::render('Restaurants/Show', [
-            'restaurant' => $restaurant,
-            'type' => 'store',
-        ]);
     }
 }

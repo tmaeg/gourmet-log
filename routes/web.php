@@ -42,11 +42,9 @@ Route::group([
     'middleware' => ['auth', 'verified'],
     'controller' => RestaurantController::class,
 ], function () {
-    Route::get('index', 'index')->name('index');
-    Route::get('show', 'show')->name('show');
+    Route::get('/', 'index')->name('index');
+    Route::get('show/{restaurant}', 'show')->name('show');
     Route::get('create', 'create')->name('create');
-    Route::post('store', 'store')->name('store');
-    Route::post('confirm', 'confirm')->name('confirm');
     Route::post('store', 'store')->name('store');
 });
 
