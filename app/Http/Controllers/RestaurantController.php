@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -38,7 +39,7 @@ class RestaurantController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:20',
             'name_katakana' => [
                 'required',
@@ -54,13 +55,15 @@ class RestaurantController extends Controller
             'map_url' => 'required|url',
             'comment' => 'required|string|max:300',
         ]);
-        
-        $path = Storage::disk('public')->putFile('food-pictures', $validated['food_picture_file']);
-        $validated['food_picture'] = asset('storage/' . $path);
 
-        if(!$validated['food_picture']) {
-            return redirect()->back()->with('error', '画像のアップロードに失敗しました。');
+        $validated = $validator->validate();
+        
+        $path = Storage::disk('public')->putFile('food-pictures', $request->file('food_picture_file'));
+        if ($path == false) {
+            $validator->errors()->add('food_picture_file', '画像のアップロードに失敗しました。');
+            return redirect()->back()->withErrors($validator);
         }
+        $validated['food_picture'] = asset('storage/' . $path);
 
         $restaurant = $request->user()->restaurants()->create($validated);
 
