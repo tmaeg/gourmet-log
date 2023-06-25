@@ -37,9 +37,15 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:10|unique:categories',
+        ]);
+
+        $request->user()->categories()->create($validated);
+
+        return redirect()->back();
     }
 
     /**

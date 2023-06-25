@@ -5,6 +5,7 @@ import TertiaryButton from '@/Components/TertiaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import Pagination from '@/Components/Pagination.vue';
 import InputItem from '@/Components/InputItem.vue';
+import InputError from '@/Components/InputError.vue';
 import { router, useForm } from '@inertiajs/vue3';
 
 defineProps(['categories']);
@@ -43,6 +44,7 @@ function destroy(category) {
                     <input v-model="form.name" />
                 </InputItem>
                 <TertiaryButton type="submit">登録</TertiaryButton>
+                <InputError :message="form.errors.name" />
             </form>
             <table>
                 <thead>
