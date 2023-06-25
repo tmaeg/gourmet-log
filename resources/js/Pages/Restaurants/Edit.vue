@@ -4,7 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TertiaryButton from '@/Components/TertiaryButton.vue';
 import RestaurantForm from '@/Components/RestaurantForm.vue';
 import RestaurantShow from '@/Components/RestaurantShow.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -44,7 +44,10 @@ function confirm() {
             <RestaurantShow :restaurant="form" :foodPicture="foodPicture" :categories="categories" />
             
             <TertiaryButton  @click="confirmPushed = false">戻る</TertiaryButton>
-            <PrimaryButton  @click="form.put(route('restaurants.update', { restaurant: restaurant.id }))">更新する</PrimaryButton>
+            <PrimaryButton  @click="router.post(route('restaurants.update', form.id), {
+                _method: 'put',
+                ...form.data(),
+            })">更新する</PrimaryButton>
         </div>
     </AuthenticatedLayout>
 </template>
