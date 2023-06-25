@@ -246,6 +246,12 @@ return [
         'updated_at' => '更新日',
         'username' => 'ユーザー名',
         'year' => '年',
+
+        'name_katakana' => 'フリガナ',
+        'review' => 'レビュー',
+        'food_picture_file' => '料理写真',
+        'map_url' => 'Google Maps URL',
+        'comment' => 'コメント',
     ],
 
 ];
