@@ -28,7 +28,17 @@ class RestaurantController extends Controller
     public function index(): Response
     {
         return Inertia::render('Restaurants/Index', [
-            'restaurants' => Auth::user()->restaurants,
+            'restaurants' => Auth::user()->restaurants()->paginate(10)->through(function ($restaurant) {
+                return [
+                    'id' => $restaurant->id,
+                    'name' => $restaurant->name,
+                    'name_katakana' => $restaurant->name_katakana,
+                    'categories' => implode(',', $restaurant->categories->pluck('name')->all()),
+                    'review' => $restaurant->review,
+                    'map_url' => $restaurant->map_url,
+                    'comment' => mb_strlen($restaurant->comment) > 20 ? mb_substr($restaurant->comment, 0, 20) . '...' : $restaurant->comment,
+                ];
+            }),
         ]);
     }
 
