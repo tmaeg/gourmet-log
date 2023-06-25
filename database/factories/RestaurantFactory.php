@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Restaurant>
@@ -16,11 +17,12 @@ class RestaurantFactory extends Factory
      */
     public function definition(): array
     {
+        $path = uploadedFile::fake()->image('avatar.jpg', 640, 480)->store('food-pictures', 'public');
         return [
             'name' => fake()->lastName(),
             'name_katakana' => fake()->lastKanaName(),
             'review' => fake()->numberBetween(1, 5),
-            'food_picture' => fake()->imageUrl(640, 480, 'food'),
+            'food_picture' => asset('storage/' . $path),
             'map_url' => 'https://goo.gl/maps/FW6U7F4k3Rmjy7h79',
             'comment' => fake()->realText(100),
         ];
