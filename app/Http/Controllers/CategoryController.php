@@ -80,14 +80,17 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return redirect(route('categories.index'));
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
-        //
+        $category->restaurants()->detach();
+        $category->delete();
+
+        return redirect()->back();
     }
 }
