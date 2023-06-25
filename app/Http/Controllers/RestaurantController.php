@@ -15,6 +15,14 @@ use Inertia\Response;
 class RestaurantController extends Controller
 {
     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Restaurant::class, 'restaurant');
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(): Response
