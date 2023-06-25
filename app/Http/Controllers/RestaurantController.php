@@ -39,26 +39,16 @@ class RestaurantController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:20',
-            'name_katakana' => [
-                'required',
-                'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u',
-            ],
-            'categories' => 'array',
-            'review' => 'required|numeric|min:1|max:5',
+        $validator = Validator::make($request->all(), array_merge(self::COMMON_VALIDATION, [
             'food_picture_file' => [
                 'required',
                 File::image()
                     ->max(12 * 1024),
             ],
-            'map_url' => 'required|url',
-            'comment' => 'required|string|max:300',
-        ]);
-
+        ]));
         $validated = $validator->validate();
         
-        $path = Storage::disk('public')->putFile('food-pictures', $request->file('food_picture_file'));
+        $path = Storage::disk('public')->putFile('food-pictures', $validated['food_picture_file']);
         if ($path == false) {
             $validator->errors()->add('food_picture_file', '画像のアップロードに失敗しました。');
             return redirect()->back()->withErrors($validator);
@@ -66,7 +56,6 @@ class RestaurantController extends Controller
         $validated['food_picture'] = asset('storage/' . $path);
 
         $restaurant = $request->user()->restaurants()->create($validated);
-
         $restaurant->categories()->sync($validated['categories']);
 
         return redirect(route('restaurants.index'));
@@ -103,7 +92,30 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant)
     {
-        dd($request->all());
+        $validator = Validator::make($request->all(), array_merge(self::COMMON_VALIDATION, [
+            'food_picture_file' => [
+                'nullable',
+                File::image()
+                    ->max(12 * 1024),
+            ],
+        ]));
+        $validated = $validator->validate();
+        $validated['food_picture'] = $restaurant->food_picture;
+        
+        if($validated['food_picture_file']) {
+            $path = Storage::disk('public')->putFile('food-pictures', $validated['food_picture_file']);
+            Storage::disk('public')->delete('food-pictures/' . basename($restaurant->food_picture));
+            if ($path == false) {
+                $validator->errors()->add('food_picture_file', '画像のアップロードに失敗しました。');
+                return redirect()->back()->withErrors($validator);
+            }
+            $validated['food_picture'] = asset('storage/' . $path);
+        }
+
+        $restaurant->update($validated);
+        $restaurant->categories()->sync($validated['categories']);
+
+        return redirect(route('restaurants.index'));
     }
 
     /**
@@ -113,4 +125,19 @@ class RestaurantController extends Controller
     {
         //
     }
+
+    /**
+     * Common validation rules.
+     */
+    const COMMON_VALIDATION = [
+        'name' => 'required|string|max:20',
+        'name_katakana' => [
+            'required',
+            'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u',
+        ],
+        'categories' => 'array',
+        'review' => 'required|numeric|min:1|max:5',
+        'map_url' => 'required|url',
+        'comment' => 'required|string|max:300',
+    ];
 }

@@ -44,7 +44,7 @@ function confirm() {
             <RestaurantShow :restaurant="form" :foodPicture="foodPicture" :categories="categories" />
             
             <TertiaryButton  @click="confirmPushed = false">戻る</TertiaryButton>
-            <PrimaryButton  @click="form.post(route('restaurants.update'))">更新する</PrimaryButton>
+            <PrimaryButton  @click="form.post(route('restaurants.update', { restaurant: restaurant.id }))">更新する</PrimaryButton>
         </div>
     </AuthenticatedLayout>
 </template>
