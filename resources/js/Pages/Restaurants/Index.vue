@@ -5,7 +5,7 @@ import TertiaryButton from '@/Components/TertiaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import Pagination from '@/Components/Pagination.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { router } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 
 defineProps(['restaurants']);
 
@@ -16,14 +16,24 @@ function destroy(restaurant) {
     }));
   }
 }
+
+const form = useForm({
+  search: (new URLSearchParams(window.location.search)).get('search'),
+});
+
+function submit() {
+  if(form.search) {
+    form.get(route('restaurants.index'));
+  }
+}
 </script>
 
 <template>
     <AuthenticatedLayout>
         <h2>お店リスト</h2>
-        <form>
-            <input />
-            <TertiaryButton>検索</TertiaryButton>
+        <form @submit.prevent="submit()">
+            <input v-model="form.search" />
+            <TertiaryButton type="submit">検索</TertiaryButton>
         </form>
         <table>
             <thead>

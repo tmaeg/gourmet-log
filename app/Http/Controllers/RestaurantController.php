@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Database\Eloquent\Builder;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,8 +28,19 @@ class RestaurantController extends Controller
      */
     public function index(): Response
     {
+        if(request()->search) {
+            $restaurants = Auth::user()->restaurants()->where(function (Builder $query) {
+                return $query
+                    ->where('name', 'like', '%' . request()->search . '%')
+                    ->orWhere('name_katakana', 'like', '%' . request()->search . '%')
+                    ->orWhere('comment', 'like', '%' . request()->search . '%');
+            });
+        } else {
+            $restaurants = Auth::user()->restaurants();
+        }
+        
         return Inertia::render('Restaurants/Index', [
-            'restaurants' => Auth::user()->restaurants()->paginate(10)->through(function ($restaurant) {
+            'restaurants' => $restaurants->paginate(10)->through(function ($restaurant) {
                 return [
                     'id' => $restaurant->id,
                     'name' => $restaurant->name,
