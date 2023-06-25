@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+Use Inertia\Inertia;
+use Inertia\Response;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return Inertia::render('Categories/Index', [
+            'categories' => Auth::user()->categories()->paginate(10)->through(function ($category) {
+                return [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                ];
+            })
+        ]);
     }
 
     /**

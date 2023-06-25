@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,5 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('update/{restaurant}', 'delete')->name('delete');
 });*/
 Route::resource('restaurants', RestaurantController::class)->middleware(['auth', 'verified']);
+
+Route::resource('categories', CategoryController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
