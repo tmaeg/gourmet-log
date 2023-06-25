@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
 });*/
 Route::resource('restaurants', RestaurantController::class)->middleware(['auth', 'verified']);
 
-Route::resource('categories', CategoryController::class)->middleware(['auth', 'verified']);
+Route::resource('categories', CategoryController::class)
+    ->except(['create', 'show'])
+    ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

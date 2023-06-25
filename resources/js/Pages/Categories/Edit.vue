@@ -2,6 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TertiaryButton from '@/Components/TertiaryButton.vue';
+import InputItem from '@/Components/InputItem.vue';
+import InputError from '@/Components/InputError.vue';
 import { useForm, router } from '@inertiajs/vue3';
 
 const props = defineProps(['category']);

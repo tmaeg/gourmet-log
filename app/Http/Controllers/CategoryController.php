@@ -12,6 +12,14 @@ use Inertia\Response;
 class CategoryController extends Controller
 {
     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Category::class, 'category');
+    }
+    
+    /**
      * Display a listing of the resource.
      */
     public function index(): Response
@@ -40,7 +48,7 @@ class CategoryController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:10|unique:categories',
+            'name' => 'required|string|max:10',
         ]);
 
         $request->user()->categories()->create($validated);
@@ -75,12 +83,12 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:10|unique:categories',
+            'name' => 'required|string|max:10',
         ]);
 
         $category->update($validated);
 
-        return redirect()->back();
+        return redirect(route('categories.index'));
     }
 
     /**

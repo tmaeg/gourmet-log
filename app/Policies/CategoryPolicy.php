@@ -9,14 +9,6 @@ use Illuminate\Auth\Access\Response;
 class CategoryPolicy
 {
     /**
-     * Create the controller instance.
-     */
-    public function __construct()
-    {
-        $this->authorizeResource(Category::class, 'category');
-    }
-
-    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
@@ -29,7 +21,7 @@ class CategoryPolicy
      */
     public function view(User $user, Category $category): bool
     {
-        return $user->id === $category->user_id;
+        return false;
     }
 
     /**
@@ -37,7 +29,7 @@ class CategoryPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
