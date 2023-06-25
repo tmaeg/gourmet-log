@@ -42,6 +42,14 @@ function truncateString(str, maxLength) {
   truncated += '...';
   return truncated;
 }
+
+function destroy(restaurant) {
+  if(confirm('削除しますか？')) {
+    router.delete(route('restaurants.destroy', {
+      restaurant: restaurant.id,
+    }));
+  }
+}
 </script>
 
 <template>
@@ -77,7 +85,7 @@ function truncateString(str, maxLength) {
                     <td><SecondaryButton @click="router.get(route('restaurants.edit', {
                       restaurant: restaurant.id,
                     }))">編集</SecondaryButton></td>
-                    <td><DangerButton>削除</DangerButton></td>
+                    <td><DangerButton @click="destroy(restaurant)">削除</DangerButton></td>
                 </tr>
             </tbody>
         </table>

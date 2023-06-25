@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group([
+/*Route::group([
     'prefix'=> 'restaurants',
     'as' => 'restaurants.',
     'middleware' => ['auth', 'verified'],
@@ -47,7 +47,9 @@ Route::group([
     Route::get('create', 'create')->name('create');
     Route::post('store', 'store')->name('store');
     Route::get('edit/{restaurant}', 'edit')->name('edit');
-    Route::post('update/{restaurant}', 'update')->name('update');
-});
+    Route::put('update/{restaurant}', 'update')->name('update');
+    Route::delete('update/{restaurant}', 'delete')->name('delete');
+});*/
+Route::resource('restaurants', RestaurantController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

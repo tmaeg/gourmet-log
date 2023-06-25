@@ -90,7 +90,7 @@ class RestaurantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Restaurant $restaurant)
+    public function update(Request $request, Restaurant $restaurant): RedirectResponse
     {
         $validator = Validator::make($request->all(), array_merge(self::COMMON_VALIDATION, [
             'food_picture_file' => [
@@ -121,9 +121,13 @@ class RestaurantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Restaurant $restaurant)
+    public function destroy(Restaurant $restaurant): RedirectResponse
     {
-        //
+        Storage::disk('public')->delete('food-pictures/' . basename($restaurant->food_picture));
+        $restaurant->categories()->detach();
+        $restaurant->delete();
+
+        return redirect(route('restaurants.index'));
     }
 
     /**
