@@ -36,7 +36,7 @@ const showingNavigationDropdown = ref(false);
                     <NavLink
                         :href="route('restaurants.create')"
                         :active="route().current('restaurants.create')"
-                        >お店登録/編集</NavLink
+                        >お店登録</NavLink
                     >
                     <NavLink
                         :href="route('categories.index')"
@@ -186,7 +186,7 @@ const showingNavigationDropdown = ref(false);
         </nav>
 
         <!-- Page Content -->
-        <main class="grow">
+        <main class="flex grow flex-col items-center px-2 py-8">
             <slot />
         </main>
     </div>

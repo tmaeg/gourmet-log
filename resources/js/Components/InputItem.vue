@@ -12,8 +12,11 @@ defineProps({
 </script>
 
 <template>
-    <label>
-        <span>{{ label }}</span><span v-if="required">*</span>
+    <label class="flex flex-col gap-1">
+        <span
+            >{{ label
+            }}<span v-if="required" class="mx-2 text-red-500">*</span></span
+        >
         <slot />
     </label>
 </template>
