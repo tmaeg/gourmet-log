@@ -88,7 +88,7 @@ function stars(review) {
                             {{ restaurant.comment }}
                         </td>
                         <td class="border border-gray-500 px-2 py-1">
-                            <PrimaryButton
+                            <SecondaryButton
                                 @click="
                                     router.get(
                                         route('restaurants.show', {
@@ -96,11 +96,11 @@ function stars(review) {
                                         })
                                     )
                                 "
-                                >詳細</PrimaryButton
+                                >詳細</SecondaryButton
                             >
                         </td>
                         <td class="border border-gray-500 px-2 py-1">
-                            <SecondaryButton
+                            <PrimaryButton
                                 @click="
                                     router.get(
                                         route('restaurants.edit', {
@@ -108,7 +108,7 @@ function stars(review) {
                                         })
                                     )
                                 "
-                                >編集</SecondaryButton
+                                >編集</PrimaryButton
                             >
                         </td>
                         <td class="border border-gray-500 px-2 py-1">

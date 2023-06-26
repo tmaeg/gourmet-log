@@ -99,6 +99,8 @@ function prepareImage(file) {
             <InputError :message="form.errors.comment" />
         </InputItem>
 
-        <TertiaryButton type="submit">確認画面へ</TertiaryButton>
+        <TertiaryButton type="submit" class="mt-4 self-center"
+            >確認画面へ</TertiaryButton
+        >
     </div>
 </template>

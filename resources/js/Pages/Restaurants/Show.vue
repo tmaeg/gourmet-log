@@ -18,7 +18,7 @@ const props = defineProps({
 
 <template>
     <AuthenticatedLayout>
-        <div class="w-96">
+        <div class="flex w-96 flex-col gap-4">
             <RestaurantShow
                 :restaurant="restaurant"
                 :food-picture="restaurant.food_picture"
@@ -27,7 +27,7 @@ const props = defineProps({
 
             <TertiaryButton
                 @click="router.get(route('restaurants.index'))"
-                class="mt-4"
+                class="mt-4 self-center"
                 >お店リストに戻る</TertiaryButton
             >
         </div>
