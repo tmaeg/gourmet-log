@@ -2,7 +2,7 @@
 ### Windows + VSCode + Dev Containerの場合
 任意のフォルダで
 ```
-https://github.com/tmaeg/gourmet-log.git
+git clone https://github.com/tmaeg/gourmet-log.git
 ```
 ```
 cd gourmet-log
