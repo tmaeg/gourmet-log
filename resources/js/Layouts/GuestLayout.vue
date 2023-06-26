@@ -1,6 +1,6 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { defineProps } from 'vue';
+import { Link } from "@inertiajs/vue3";
+
 defineProps({
     logo: {
         type: Boolean,
@@ -14,28 +14,32 @@ defineProps({
 </script>
 
 <template>
-    <header class="flex justify-between items-center h-20 bg-teal-300 text-white">
-        <div>
-            <Link href="/" v-if="logo">
-                <h1>Gourmet Log</h1>
-            </Link>
-        </div>
-
-        <nav class="flex gap-4">
-            <Link href="/login">ログイン</Link>
-
-            <Link href="/register">新規登録</Link>
-        </nav>
-    </header>
-    <main v-if="box">
-        <div
-            v-if="box"
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
+    <div class="flex h-screen w-screen flex-col">
+        <header
+            class="flex h-20 items-center justify-between bg-teal-300 px-8 text-white"
         >
+            <div>
+                <Link href="/" v-if="logo">
+                    <h1 class="text-white sm:text-2xl">Gourmet Log</h1>
+                </Link>
+            </div>
+
+            <nav class="flex gap-6 sm:gap-12">
+                <Link href="/login" class="hover:underline">ログイン</Link>
+
+                <Link href="/register" class="hover:underline">新規登録</Link>
+            </nav>
+        </header>
+        <main v-if="box">
+            <div
+                v-if="box"
+                class="mx-auto mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
+            >
+                <slot />
+            </div>
+        </main>
+        <main v-else class="grow">
             <slot />
-        </div>
-    </main>
-    <main v-else>
-        <slot />
-    </main>
+        </main>
+    </div>
 </template>
