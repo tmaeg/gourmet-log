@@ -69,7 +69,10 @@ class RestaurantController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validator = Validator::make($request->all(), array_merge(self::COMMON_VALIDATION, [
+        $data = $request->all();
+        if(!isset($data['categories'])) $data['categories'] = [];
+
+        $validator = Validator::make($data, array_merge(self::COMMON_VALIDATION, [
             'food_picture_file' => [
                 'required',
                 File::image()
@@ -122,7 +125,10 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, Restaurant $restaurant): RedirectResponse
     {
-        $validator = Validator::make($request->all(), array_merge(self::COMMON_VALIDATION, [
+        $data = $request->all();
+        if(!isset($data['categories'])) $data['categories'] = [];
+
+        $validator = Validator::make($data, array_merge(self::COMMON_VALIDATION, [
             'food_picture_file' => [
                 'nullable',
                 File::image()
