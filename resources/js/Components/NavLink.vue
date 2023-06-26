@@ -1,6 +1,5 @@
 <script setup>
-import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link } from "@inertiajs/vue3";
 
 const props = defineProps({
     href: {
@@ -11,16 +10,21 @@ const props = defineProps({
         type: Boolean,
     },
 });
-
-const classes = computed(() =>
-    props.active
-        ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-        : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'
-);
 </script>
 
 <template>
-    <Link :href="href" :class="classes">
+    <Link
+        v-if="active"
+        :href="href"
+        class="inline-flex w-full items-center justify-center bg-white text-base font-medium leading-10 text-amber-900"
+    >
+        <slot />
+    </Link>
+    <Link
+        v-else
+        :href="href"
+        class="inline-flex items-center border-b-2 border-transparent px-1 text-base font-medium leading-10 text-white transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 focus:outline-none"
+    >
         <slot />
     </Link>
 </template>
