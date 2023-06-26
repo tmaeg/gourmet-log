@@ -46,3 +46,7 @@ npm run dev
 migrateは1回でうまくいかないことがある<br>
 最後にlocalhostにアクセス<br>
 ログイン用メールアドレス：`user1@example.org`　パスワード：`password`
+
+### HeidiSQLの設定
+パスワードは`password`<br>
+![image](https://github.com/tmaeg/gourmet-log/assets/61919505/cee1b28d-f95b-4389-bcf1-42424e1f1bcd)
