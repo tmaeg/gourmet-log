@@ -15,10 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::factory(2)->create();
+        $users = User::factory(2)->sequence(
+            ['email' => 'user1@example.org'],
+            ['email' => 'user2@example.org'],
+        )->create();
         foreach ($users as $user) {
-            $categories = Category::factory(10)->for($user)->count(10)->create();
-            for($i = 0; $i < 10; $i++) {
+            $categories = Category::factory(20)->for($user)->create();
+            for($i = 0; $i < 20; $i++) {
                 Restaurant::factory()->for($user)->hasAttached($categories->random(rand(1, 3)))->create();
             }
         }

@@ -44,4 +44,5 @@ php artisan storage:link
 npm run dev
 ```
 migrateは1回でうまくいかないことがある<br>
-最後にlocalhostにアクセス
+最後にlocalhostにアクセス<br>
+ログイン用メールアドレス：`user1@example.org`　パスワード：`password`
