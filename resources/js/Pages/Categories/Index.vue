@@ -16,7 +16,9 @@ const form = useForm({
 
 function store() {
     if (form.name) {
-        form.post(route("categories.store"));
+        form.post(route("categories.store"), {
+            onSuccess: () => form.reset(),
+        });
     }
 }
 
